@@ -9,17 +9,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class zakatconverter extends AppCompatActivity implements View.OnClickListener {
 
     EditText etgram;
-    Button btnconvert;
+    Button btnconvert, btnclear;
     TextView zakatoutput;
     Toolbar converterToolbar;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,19 +26,17 @@ public class zakatconverter extends AppCompatActivity implements View.OnClickLis
 
         etgram = findViewById(R.id.etGoldWeight);
         btnconvert = findViewById(R.id.btnconvert);
-        zakatoutput = findViewById((R.id.zakatoutput));
+        zakatoutput = findViewById(R.id.zakatoutput);
+        btnclear = findViewById(R.id.btnclear);
 
         btnconvert.setOnClickListener(this);
+        btnclear.setOnClickListener(this);
 
         converterToolbar = findViewById(R.id.converter_toolbar);
         setSupportActionBar(converterToolbar);
         getSupportActionBar().setTitle("ZAKAT CONVERTER");
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-
-
     }
 
     @Override
@@ -77,10 +73,19 @@ public class zakatconverter extends AppCompatActivity implements View.OnClickLis
                 return;
             }
 
-
-
             // Perform zakat calculation based on the inputs
             calculateZakat(gram, goldType, goldValuePerGram);
+
+        } else if (v.getId() == R.id.btnclear) {
+            // Clear button clicked
+            etgram.getText().clear();
+            zakatoutput.setText("");
+
+            RadioGroup radioGroup = findViewById(R.id.radioGroup);
+            radioGroup.clearCheck();
+
+            RadioGroup goldValueRadioGroup = findViewById(R.id.radioGroupGoldValuePerGram);
+            goldValueRadioGroup.clearCheck();
         }
     }
 
@@ -108,6 +113,7 @@ public class zakatconverter extends AppCompatActivity implements View.OnClickLis
                 "\nTotal Gold Value that is Zakat Payable: RM" + totalGoldValueZakatPayable +
                 "\nTotal Zakat: RM" + zakatValue;
         zakatOutputTextView.setText(output);
+        zakatOutputTextView.setTextSize(16);
     }
 
     @Override
